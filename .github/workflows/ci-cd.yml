@@ -1,0 +1,44 @@
+name: CI/CD
+
+on:
+  push:
+    paths:
+      - 'src/**'
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+        with:
+          sparse-checkout: |
+            src
+
+      - name: Get short commit hash
+        id: getshortsha
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Copy src to cluster
+        uses: garygrossgarten/github-action-scp@v0.8.0
+        with:
+          local: ./src
+          remote: "/ceph/hpc/home/${{ secrets.SSH_USERNAME }}/TsunamiHySEA/OpenSource/src_${{ steps.getshortsha.outputs.sha_short }}"
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          privateKey: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+
+      - name: Compile Tsunami-HySEA and enqueue job
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script_stop: true
+          script: |
+            export SHA_SHORT=${{ steps.getshortsha.outputs.sha_short }}
+            cd "/ceph/hpc/home/${{ secrets.SSH_USERNAME }}/test"
+            ./run_test
