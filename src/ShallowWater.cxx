@@ -1,5 +1,5 @@
 /**********************************************************************
- Tsunami-HySEA numerical model open source v1.1
+ Tsunami-HySEA numerical model open source v1.1.1
  developed by the EDANYA Research Group, University of Malaga (Spain).
  https://www.uma.es/edanya
  https://edanya.uma.es/hysea/
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
 	if (argc < 2) {
 		cerr << "/**********************************************************************" << endl;
-		cerr << " Tsunami-HySEA numerical model open source v1.1                        " << endl;
+		cerr << " Tsunami-HySEA numerical model open source v1.1.1                      " << endl;
 		cerr << " developed by the EDANYA Research Group, University of Malaga (Spain). " << endl;
 		cerr << " https://www.uma.es/edanya                                             " << endl;
 		cerr << " https://edanya.uma.es/hysea/                                          " << endl;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 		cerr << "    Initial state file" << endl;
 		cerr << "  Else if " << OKADA_STANDARD << ":" << endl;
 		cerr << "    A line containing:"<< endl;
-		cerr << "      Lon_epicenter Lat_epicenter Depth_hypocenter(km) Fault_lenght(km) Fault_width(km) Strike Dip Rake Slip(m)" << endl;
+		cerr << "      Lon_epicenter Lat_epicenter Depth_hypocenter(km) Fault_length(km) Fault_width(km) Strike Dip Rake Slip(m)" << endl;
 		cerr << "  NetCDF file prefix" << endl;
 		cerr << "  Number of levels (should be 1)" << endl;
 		cerr << "  Upper border condition (1: open, -1: wall)" << endl;
@@ -133,7 +133,8 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 
 	mostrarDatosProblema(numNiveles, okada_flag, datosNivel, numVolxNivel0, numVolyNivel0, tiempo_tot,
-		tiempoGuardarNetCDF, tiempoGuardarSeries, CFL, mf0, vmax, epsilon_h, hpos, cvis, L, H, Q, T);
+		tiempoGuardarNetCDF, leer_fichero_puntos, tiempoGuardarSeries, CFL, mf0, vmax, epsilon_h,
+		hpos, cvis, L, H, Q, T);
 
 	cout << scientific;
 	err = shallowWater(numNiveles, okada_flag, LON_C, LAT_C, DEPTH_C, FAULT_L, FAULT_W, STRIKE, DIP, RAKE, SLIP,
