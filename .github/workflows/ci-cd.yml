@@ -2,6 +2,8 @@ name: CI/CD
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'src/**'
 
@@ -21,16 +23,16 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Copy src to cluster
-        uses: garygrossgarten/github-action-scp@v0.8.0
+        uses: appleboy/scp-action@v0.1.4
         with:
-          local: ./src
-          remote: "/ceph/hpc/home/${{ secrets.SSH_USERNAME }}/TsunamiHySEA/OpenSource/src_${{ steps.getshortsha.outputs.sha_short }}"
+          source: ./src/*
+          target: "/ceph/hpc/home/${{ secrets.SSH_USERNAME }}/TsunamiHySEA/OpenSource/src_${{ steps.getshortsha.outputs.sha_short }}"
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          privateKey: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
 
-      - name: Compile Tsunami-HySEA and enqueue job
+      - name: Compile Tsunami-HySEA and enqueue jobs
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
