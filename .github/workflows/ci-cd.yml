@@ -43,4 +43,4 @@ jobs:
           script: |
             export SHA_SHORT=${{ steps.getshortsha.outputs.sha_short }}
             cd "/ceph/hpc/home/${{ secrets.SSH_USERNAME }}/test"
-            ./run_test
+            ./run_test.sh
