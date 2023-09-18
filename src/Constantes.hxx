@@ -13,7 +13,7 @@
 #define EARTH_RADIUS   6378136.6
 #define SPONGE_SIZE    4      // Size of the sponge layer (>= 0)
 #define SEA_LEVEL      0.0    // Sea level in meters. Used in sponge layer
-#define DEFLATE_LEVEL  6      // Level of compression of the NetCDF files (0-9)
+#define DEFLATE_LEVEL  5      // Level of compression of the NetCDF files (0-9)
 
 #define SEA_SURFACE_FROM_FILE 0
 #define OKADA_STANDARD        1
